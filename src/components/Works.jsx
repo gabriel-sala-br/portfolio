@@ -1,14 +1,32 @@
-import React, { useState, useRef } from "react";
-import Tilt from "react-tilt";
+import React, { useState, useRef, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import { projects } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
+import { services } from "../constants";
 
 const PAGE_SIZE = 3;
 
+const ServiceCard = ({ index, title, icon }) => (
+  <motion.div
+    variants={fadeIn("right", "spring", index * 0.5, 0.75)}
+    className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
+  >
+    <div className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
+      <img
+        src={icon}
+        alt="web-development"
+        className="w-16 h-16 object-contain"
+      />
+      <h3 className="text-white text-[20px] font-bold text-center">{title}</h3>
+    </div>
+  </motion.div>
+);
 const ProjectCard = ({
   index,
   name,
@@ -19,21 +37,13 @@ const ProjectCard = ({
 }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <Tilt
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className="bg-tertiary p-5 rounded-2xl sm:w-[340px] w-full"
-      >
+      <div className="bg-tertiary p-5 rounded-2xl sm:w-[340px] w-full">
         <div className="relative w-full h-[230px]">
           <img
             src={image}
             alt="project_image"
             className="w-full h-full object-cover rounded-2xl"
           />
-
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
             <div
               onClick={() => window.open(source_code_link, "_blank")}
@@ -47,12 +57,10 @@ const ProjectCard = ({
             </div>
           </div>
         </div>
-
         <div className="mt-5">
           <h3 className="text-white font-bold text-[24px]">{name}</h3>
           <p className="mt-2 text-secondary text-[14px]">{description}</p>
         </div>
-
         <div className="mt-4 flex flex-wrap gap-2">
           {tags.map((tag) => (
             <p
@@ -63,7 +71,7 @@ const ProjectCard = ({
             </p>
           ))}
         </div>
-      </Tilt>
+      </div>
     </motion.div>
   );
 };
@@ -99,7 +107,14 @@ const Works = () => {
         <p className={`${styles.sectionSubText}`}>My work</p>
         <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
       </motion.div>
-
+      {/* <div style={{ height: "100vh", width: "100vw" }}>
+        <Scene />
+      </div> */}
+      <div className="mt-20 flex flex-wrap gap-10">
+        {services.map((service, index) => (
+          <ServiceCard key={service.title} index={index} {...service} />
+        ))}
+      </div>
       <div
         ref={firstProjectRef}
         className="mt-20 flex flex-col md:flex-row items-center justify-center relative"
