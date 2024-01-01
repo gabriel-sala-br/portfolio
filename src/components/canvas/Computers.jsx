@@ -68,11 +68,11 @@ const ComputersCanvas = (props) => {
           y: section === 0 ? 0 : -1,
         }}
       >
-        <OrbitControls
+        {/* <OrbitControls
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
-        />
+        /> */}
         <Office />
         <group
           name="CharacterSpot"

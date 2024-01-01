@@ -105,7 +105,7 @@ export function Office(props) {
           material={textureMaterial}
         />
       </group>
-      <group position={[0.09, 0.025, 0]}>
+      <group name="mouse" position={[0.05, 0.015, 0.08]}>
         <mesh
           castShadow
           receiveShadow
