@@ -13,8 +13,7 @@ import Works from "./Works";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
 import CanvasLoader from "./Loader";
-import Avatar from "./Avatar";
-
+import Avatar from "./canvas/Avatar";
 export {
   Hero,
   Navbar,

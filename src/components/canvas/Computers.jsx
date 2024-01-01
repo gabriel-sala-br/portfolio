@@ -1,35 +1,36 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import React, { useEffect, useState } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useControls } from "leva";
+import { animate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion-3d";
+import { framerMotionConfig } from "./config";
+import Avatar from "./Avatar";
+import { Office } from "./Office";
+import { OrbitControls } from "@react-three/drei";
 
-import CanvasLoader from "../Loader";
+const ComputersCanvas = (props) => {
+  const { section } = props;
+  const { viewport } = useThree();
 
-const Computers = ({ isMobile }) => {
-  const computer = useGLTF("./desktop_pc/scene.gltf");
+  const cameraPositionX = useMotionValue();
+  const cameraLookAtX = useMotionValue();
 
-  return (
-    <mesh>
-      <hemisphereLight intensity={0.15} groundColor='black' />
-      <spotLight
-        position={[-20, 50, 10]}
-        angle={0.12}
-        penumbra={1}
-        intensity={1}
-        castShadow
-        shadow-mapSize={1024}
-      />
-      <pointLight intensity={1} />
-      <primitive
-        object={computer.scene}
-        scale={isMobile ? 0.7 : 0.75}
-        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
-      />
-    </mesh>
-  );
-};
+  useEffect(() => {
+    animate(cameraPositionX ? -5 : 0, {
+      ...framerMotionConfig,
+    });
+    animate(cameraLookAtX ? 5 : 0, {
+      ...framerMotionConfig,
+    });
+  }, []);
 
-const ComputersCanvas = () => {
+  const { animation } = useControls({
+    animation: {
+      value: "Typing",
+      options: ["Typing", "Falling", "Standing"],
+    },
+  });
+
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -53,25 +54,46 @@ const ComputersCanvas = () => {
     };
   }, []);
 
+  // const { viewport } = useThree();
+
   return (
-    <Canvas
-      frameloop='demand'
-      shadows
-      dpr={[1, 2]}
-      camera={{ position: [20, 3, 5], fov: 25 }}
-      gl={{ preserveDrawingBuffer: true }}
-    >
-      <Suspense fallback={<CanvasLoader />}>
+    <>
+      <ambientLight intensity={1} />
+      {/* <Computers isMobile={isMobile} /> */}
+      <motion.group
+        position={[0, 2, 0]}
+        scale={[0.9, 0.9, 0.9]}
+        rotation-y={-Math.PI / 4}
+        animate={{
+          y: section === 0 ? 0 : -1,
+        }}
+      >
         <OrbitControls
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        <Computers isMobile={isMobile} />
-      </Suspense>
+        <Office />
+        <group
+          name="CharacterSpot"
+          position={[0.07, 0.16, -0.57]}
+          rotation={[-Math.PI, 0.42, -Math.PI]}
+        >
+          <Avatar animation={section === 0 ? "Falling" : "Typing"} />
+        </group>
+      </motion.group>
+      <motion.group
+        position={[0, -1.5, -10]}
+        animate={{
+          z: section === 1 ? 0 : -10,
+          y: section === 1 ? -viewport.height : -1.5,
+        }}
+      >
+        <directionalLight position={[-5, 3, 5]} intensity={0.4} />
+      </motion.group>
 
-      <Preload all />
-    </Canvas>
+      {/* <Preload all /> */}
+    </>
   );
 };
 

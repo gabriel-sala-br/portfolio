@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node generateAnimationList.js",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -15,6 +16,7 @@
     "@types/three": "0.152.1",
     "fbx2gltf": "^0.9.7-p1",
     "framer-motion": "^9.1.7",
+    "framer-motion-3d": "^10.16.16",
     "leva": "^0.9.35",
     "maath": "^0.5.3",
     "react": "^18.2.0",
