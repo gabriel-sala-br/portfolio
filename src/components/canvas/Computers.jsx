@@ -10,6 +10,7 @@ import { OrbitControls } from "@react-three/drei";
 
 const ComputersCanvas = (props) => {
   const { section } = props;
+  console.log(section);
   const { viewport } = useThree();
 
   const cameraPositionX = useMotionValue();
@@ -79,7 +80,7 @@ const ComputersCanvas = (props) => {
           position={[0.07, 0.16, -0.57]}
           rotation={[-Math.PI, 0.42, -Math.PI]}
         >
-          <Avatar animation={section === 0 ? "Falling" : "Typing"} />
+          <Avatar animation={"Typing"} />
         </group>
       </motion.group>
       <motion.group

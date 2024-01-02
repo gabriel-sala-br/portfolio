@@ -6,6 +6,8 @@ import * as THREE from "three";
 
 const Avatar = (props) => {
   const { animation } = props;
+  console.log("animation", animation);
+
   const { headFollow, cursorFollow, wireframe } = useControls({
     headFollow: false,
     cursorFollow: false,
@@ -41,13 +43,10 @@ const Avatar = (props) => {
       group.current.getObjectByName("Spine2").lookAt(target);
     }
   });
-
   useEffect(() => {
-    actions[animation].reset().fadeIn(0.5).play();
-    return () => {
-      actions[animation].reset().fadeOut(0.5);
-    };
-  }, [animation]);
+    actions[animation]?.reset().fadeIn(0.5).play();
+    return () => actions[animation]?.reset().fadeOut(0.5);
+  }, [animation, actions]);
 
   useEffect(() => {
     Object.values(materials).forEach((material) => {

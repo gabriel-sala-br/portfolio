@@ -13,10 +13,11 @@ import {
   StarsCanvas,
 } from "./components";
 import { framerMotionConfig } from "./components/canvas/config";
-import { Leva } from "leva";
+import { Leva, useControls } from "leva";
 
 const App = () => {
   const [section, setSection] = useState(0);
+
   return (
     <BrowserRouter>
       <MotionConfig
@@ -28,7 +29,7 @@ const App = () => {
           <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
             <Navbar />
 
-            <Hero />
+            <Hero section={section} />
           </div>
 
           <About />
